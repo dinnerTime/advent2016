@@ -2,6 +2,36 @@
 
 require 'io/console'
 
+def shiftChar(char, shift)
+	min = 'a'.ord
+	max = 'z'.ord
+	charIndex = char.ord
+
+	i = 0
+	until i == shift do
+		charIndex += 1
+		if charIndex > max
+			charIndex = min
+		end
+		i += 1
+	end
+
+	return charIndex.chr
+end
+
+ def decryptString(encrypted, shift)
+	 decrypted = ""
+		encrypted.split('').each do |char|
+ 			if char == '-'
+ 				decrypted += " "
+		 	else
+		 		newChar = shiftChar(char,shift)
+		 		decrypted += newChar
+		 	end
+		end
+		return decrypted
+ end
+
 def countCharacterOccurance(input, char)
 	return input.split('').count { |c| c == char }
 end
@@ -29,31 +59,38 @@ def uniqueAlphaCharacters(input, doSort)
 	return result
 end
 
+# === Begin input. ===============================================================================
+
 raw_input = IO.binread('input.txt')
 lines = raw_input.split("\n")
 
 validTotal = 0
 
 lines.each do |line|
-
 	checksum = line.match(/\[.*\]/).to_s
-	line = line.gsub("#{checksum}", '')
+	encrypted = line.split('[')[0].to_s
+	encrypted = encrypted.match(/[a-z\-]+/).to_s
 	checksum = checksum.match(/[[:alpha:]]+/)
-	#puts "#{line} => #{checksum}"
 
 	code = line.match(/\d+/).to_s
-	enc = line.gsub(code, '')
-	enc = enc.gsub('-', '')
+	unique = line.gsub(code, '')
+	unique = unique.gsub('-', '')
+
 	code = code.to_i
 
-	sorted = uniqueAlphaCharacters(enc, true)
+	sorted = uniqueAlphaCharacters(unique, true)
 	sorted = sorted[0..4]
 
 	valid = sorted.to_s == checksum.to_s
-	#puts "#{enc} [#{sorted}] vs [#{checksum}] valid: #{valid}"
+
+	decrypted = decryptString(encrypted, code)
+
+	if decrypted.match('north') && valid
+		puts "#{valid} ? #{decrypted} => #{code}"
+	end
+
 	if valid
 		validTotal += code
 	end
 end
 
-puts "Found the code sum #{validTotal}"
