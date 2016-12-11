@@ -42,7 +42,7 @@ def validate(sequence)
 				bab.each do |b|
 					bString = b.to_s
 					if chunk.include? invert(bString)
-						puts "found #{chunk} from #{bString}"#GG}" in #{sequence}"#GG
+						puts "found #{chunk} from #{bString}"
 						return true
 					end
 				end
@@ -62,7 +62,6 @@ lines = raw_input.split("\n")
  	if valid
  		count += 1
  	end
- 	#puts "#{line} valid: #{valid}"
  end
 
 puts "#{count}"
