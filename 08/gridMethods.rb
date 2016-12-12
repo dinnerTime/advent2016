@@ -39,8 +39,16 @@ def rotateGrid(grid, dimension, i, magnitude)
 			end
 
 		when 'y'
-			grid[i].each do |x|
-			end
+				grid[i].each_with_index do |x, index|
+						shiftedIndex = index-1
+				
+						if shiftedIndex < 0 
+										shiftedIndex = grid[i].length-1
+						end
+						
+						replacement = grid[i][shiftedIndex]
+						replacements.merge!({[i,index] => replacement})
+				end	
 		end
 
 		replacements.each do |r,v|
