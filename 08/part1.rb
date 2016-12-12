@@ -3,18 +3,13 @@
 require 'io/console'
 load 'gridMethods.rb'
 
-grid = createGrid(3,7,".")
+#raw_input = IO.binread('testInput.txt')
+#grid = createGrid(7,3,".")
 
-grid.each do |x|
-	puts x.join()
-end
+raw_input = IO.binread('input.txt')
+grid = createGrid(50,6,".")
 
-exit
-
-# raw_input = IO.binread('input.txt')
-raw_input = IO.binread('testInput.txt')
 lines = raw_input.split("\n")
-
 lines.each do |line|
 	instructions = line.split(' ') 
 	case instructions[0]
@@ -23,8 +18,8 @@ lines.each do |line|
 		# rotate column x=1 by 1
 		direction = instructions[2].split('=')
 		dimension = direction[0]
-		i = direction[1]
-		magnitude = instructions.last
+		i = direction[1].to_i
+		magnitude = instructions.last.to_i
 		rotateGrid(grid, dimension, i, magnitude)
 
 	when 'rect'
@@ -33,9 +28,19 @@ lines.each do |line|
 		rect = createGrid(dimensions[0].to_i, dimensions[1].to_i, "\#")
 		pushGrid(grid, rect)
 	end
-
 end
 
 grid.each do |x|
- 	puts x.join()
+    puts x.join()
 end
+
+count = 0
+grid.each do |x|
+    x.each do |y|
+        if y == "#"
+            count += 1
+        end
+    end
+end
+
+puts "Found #{count} lit pixels."
