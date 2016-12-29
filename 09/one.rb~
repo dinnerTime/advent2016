@@ -29,8 +29,8 @@ def decomp(sequence)
         if val.match(pattern)
             enumerator  = val[0]
             charCount = val[2]
+            puts "enumerator: #{enumerator} charCount: #{charCount}"
             sub = sequence[index+1..index+enumerator.to_i]
-            puts "enumerator: #{enumerator} charCount: #{charCount} sub: #{sub}"
             if sub.all? {|s| s.match(pattern)}
                 puts "RECURSE"
             end
